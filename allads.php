@@ -8,7 +8,7 @@ include("backend/authorization.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdSpot - Dashboard</title>
+    <title>AdSpot - Sludinājumi</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
 </head>
@@ -27,7 +27,7 @@ include("backend/authorization.php");
                     <a class="nav-link" href="allads.php">Visi Sludinājumi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Par mums</a>
+                    <a class="nav-link" href="aboutus.php">Par mums</a>
                 </li>
             </ul>
             <div class="input-group me-2 w-50 px-5">
@@ -55,22 +55,83 @@ include("backend/authorization.php");
         ?>
     </div>
 </nav>
+
 <div class="container mt-4">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Kopā sludinājumi iekš AdSpot</h5>
-                    <p class="card-text"><?php echo $totalAds; ?></p>
-                    <a href="create_ad.php" class="btn btn-outline-primary">Izveido savu sludinājumu</a>
-                    <a href="create_ad.php" class="btn btn-outline-primary">Apskati savus sludinājumus</a>
-                </div>
+    <form method="post">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label class="text-white" for="priceRange">Max cena $</label>
+                <input type="range" class="form-range" id="priceRange" name="priceRange" min="0" max="1000000">
+                <div class="text-white" id="priceRangeValue"></div>
+            </div>
+            <div class="col-md-3">
+                <label class="text-white" for="year">Gads</label>
+                <input type="text" class="form-control" id="year" name="year">
+            </div>
+            <div class="col-md-3">
+                <label>&nbsp;</label>
+                <button type="submit" class="btn btn-primary btn-block">Filtrēt</button>
             </div>
         </div>
-    </div>
+    </form>
+
+    <?php
+    try {
+        $query = "SELECT * FROM ads WHERE 1";
+        if (isset($_POST['priceFrom']) && $_POST['priceFrom'] != "") {
+            $query .= " AND price >= " . intval($_POST['priceFrom']);
+        }
+        if (isset($_POST['priceTo']) && $_POST['priceTo'] != "") {
+            $query .= " AND price <= " . intval($_POST['priceTo']);
+        }
+        if (isset($_POST['year']) && $_POST['year'] != "") {
+            $query .= " AND year = " . intval($_POST['year']);
+        }
+        $stmt = $pdo->query($query);
+
+        if ($stmt) {
+            echo '
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>Nr.</th>
+                        <th>Bilde</th>
+                        <th>Nosaukums</th>
+                        <th>Apraksts</th>
+                        <th>Kategorija</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>';
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                echo '<tr>';
+                echo '<td>' . $row['Ad_id'] . '</td>';
+                echo '<td>' . $row['Img'] . '</td>';
+                echo '<td>' . $row['Name'] . '</td>';
+                echo '<td>' . $row['Description'] . '</td>';
+                echo '<td>' . $row['Type'] . '</td>';
+                echo '<td><button class="btn btn-outline-primary">Apskatīt</button></td>';
+                echo '</tr>';
+            }
+            echo '</tbody>
+            </table>';
+        } else {
+            echo "Error fetching ads from the database: " . print_r($pdo->errorInfo(), true);
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . $e->getMessage();
+    }
+    ?>
 </div>
 
-</body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
 <script src="https://unpkg.com/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
+<script>
+    const priceRange = document.getElementById('priceRange');
+    const priceRangeValue = document.getElementById('priceRangeValue');
+    priceRange.addEventListener('input', () => {
+        priceRangeValue.innerText = priceRange.value;
+    });
+</script>
+</body>
 </html>

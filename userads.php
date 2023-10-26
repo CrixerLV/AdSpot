@@ -24,7 +24,7 @@ include("backend/authorization.php");
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="allads.php">Visi Sludinājumi</a>
+                    <a class="nav-link" href="#">Visi Sludinājumi</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Par mums</a>
@@ -55,20 +55,6 @@ include("backend/authorization.php");
         ?>
     </div>
 </nav>
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Kopā sludinājumi iekš AdSpot</h5>
-                    <p class="card-text"><?php echo $totalAds; ?></p>
-                    <a href="create_ad.php" class="btn btn-outline-primary">Izveido savu sludinājumu</a>
-                    <a href="create_ad.php" class="btn btn-outline-primary">Apskati savus sludinājumus</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>

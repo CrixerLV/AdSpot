@@ -9,14 +9,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // You should perform data validation and sanitation here
 
-    $sql = "SELECT user_id, email, password FROM users WHERE email = ?";
+    $sql = "SELECT user_id, email, password, name, lastname FROM users WHERE email = ?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$email]);
     $user = $stmt->fetch();
 
     if ($user && password_verify($password, $user["password"])) {
         session_start();
-        $_SESSION["user_id"] = $user["id"];
+        $_SESSION["id"] = $user["user_id"];
+        $_SESSION["name"] = $user["name"];
+        $_SESSION["lastname"] = $user["lastname"];
         header("Location: dashboard.php"); 
         exit();
     } else {
@@ -34,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.2/components/logins/login-9/assets/css/login-9.css" />
-    <link rel="stylesheet" href="./Styles/login.css">
 </head> 
 <body class="bg-dark">
 <section class="bg-primary py-3 py-md-5 py-xl-8">
