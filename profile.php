@@ -8,7 +8,7 @@ include("backend/authorization.php");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdSpot - Dashboard</title>
+    <title>AdSpot - Profile</title>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
 </head>
 <body class="bg-dark">
@@ -26,7 +26,7 @@ include("backend/authorization.php");
                     <a class="nav-link" href="allads.php">Visi Sludinājumi</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Par mums</a>
+                    <a class="nav-link" href="profile.php">Profils</a> <!-- Added Profile Page Link -->
                 </li>
             </ul>
             <div class="input-group me-2 w-50 px-5">
@@ -45,7 +45,7 @@ include("backend/authorization.php");
               echo '<div class="dropdown ms-auto px-2">';
               echo '<a href="#" class="text-light dropdown-toggle" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">' . $_SESSION['name'] . ' ' . $_SESSION['lastname'] . '</a>';
               echo '<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">';
-              echo '<li><a class="dropdown-item" href="profile.php">Profils</a></li>';
+              echo '<li><a class="dropdown-item" href="#">Profils</a></li>';
               echo '<li><a class="dropdown-item" href="#">Mani sludinājumi</a></li>';
               echo '<li><a class="dropdown-item" href="./backend/logout.php">Iziet</a></li>';
               echo '</ul>';
@@ -54,17 +54,41 @@ include("backend/authorization.php");
         ?>
     </div>
 </nav>
-<div class="container mt-4">
+<div class="container-sm mt-4">
     <div class="row">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title"><i class="bi bi-card-list"></i> Kopā sludinājumi iekš AdSpot</h5>
-                    <p class="card-text"><?php echo $totalAds; ?></p>
-                    <a href="create_ad.php" class="btn btn-outline-primary">Izveido savu sludinājumu</a>
-                    <a href="my_ads.php" class="btn btn-outline-primary">Apskati savus sludinājumus</a>
+        <div class="col-md bg-white rounded m-2 p-4">
+            <div class="text-center">
+                <img src="AdSpot.png" alt="User Image" class="img-fluid" style="max-width: 200px; cursor: pointer;" data-bs-toggle="modal" data-bs-target="#imageModal">
+                <h5 class="mt-3">Vārds Uzvārds</h5>
+                <h5>Komentāri</h5>
+                <div id="comments">
+
                 </div>
             </div>
+        </div>
+
+        <div class="col-md bg-white rounded m-2 p-4">
+            <h5>Labot profilu</h5>
+            <form>
+                <div class="mb-3">
+                    <label for="userEmail" class="form-label">E-pasts</label>
+                    <input type="email" class="form-control" id="userEmail" value="<?php echo $userEmail; ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="firstname" class="form-label">Vārds</label>
+                    <input type="text" class="form-control" id="firstname" value="<?php echo $firstname; ?>">
+                </div>
+                <div class="mb-3">
+                    <label for="lastname" class="form-label">Uzvārds</label>
+                    <input type="text" class="form-control" id="lastname" value="<?php echo $lastname; ?>">
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md bg-white rounded m-2 p-4">
+            <h5>Tavi sludinājumi</h5>
         </div>
     </div>
 </div>
