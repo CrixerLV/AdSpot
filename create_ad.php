@@ -135,8 +135,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var adLocationInput = document.getElementById('adLocation');
     var autocomplete = new google.maps.places.Autocomplete(adLocationInput);
 });
-
-
 </script>
 </body>
 </html>

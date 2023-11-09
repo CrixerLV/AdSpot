@@ -1,31 +1,61 @@
 <?php
 require "./backend/db_con.php";
-
 $loginError = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+  $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+  $password = $_POST["password"];
 
-    // You should perform data validation and sanitation here
+  if (!$email) {
+      $loginError = "Invalid email format";
+  } else {
+      $sql = "SELECT user_id, email, password, name, lastname FROM users WHERE email = ?";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute([$email]);
+      $user = $stmt->fetch();
 
-    $sql = "SELECT user_id, email, password, name, lastname FROM users WHERE email = ?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$email]);
-    $user = $stmt->fetch();
+      if ($user && password_verify($password, $user["password"])) {
 
-    if ($user && password_verify($password, $user["password"])) {
-        session_start();
-        $_SESSION["id"] = $user["user_id"];
-        $_SESSION["name"] = $user["name"];
-        $_SESSION["lastname"] = $user["lastname"];
-        header("Location: dashboard.php"); 
-        exit();
-    } else {
-        $loginError = "Nedērīgs e-pasts un vai parole!";
-    }
+          $_SESSION["id"] = $user["user_id"];
+          $_SESSION['lastname'] = htmlspecialchars($user["lastname"]);
+          $_SESSION["name"] = htmlspecialchars($user["name"]);
+
+          if (isset($_POST['remember_me'])) {
+
+              $token = bin2hex(random_bytes(32));
+
+              $hashedToken = password_hash($token, PASSWORD_DEFAULT);
+
+              $stmt = $pdo->prepare("UPDATE users SET remember_token = ? WHERE user_id = ?");
+              $stmt->execute([$hashedToken, $user['user_id']]);
+
+              setcookie('user_id', $user['user_id'], time() + (30 * 24 * 60 * 60), '/', '', true, true);
+              setcookie('token', $token, time() + (30 * 24 * 60 * 60), '/', '', true, true);
+          }
+          if (isset($_COOKIE['user_id']) && isset($_COOKIE['token'])) {
+              $storedUserId = $_COOKIE['user_id'];
+              $storedToken = $_COOKIE['token'];
+
+              $stmt = $pdo->prepare("SELECT user_id, remember_token FROM users WHERE user_id = ?");
+              $stmt->execute([$storedUserId]);
+              $user = $stmt->fetch();
+
+              if ($user && password_verify($storedToken, $user['remember_token'])) {
+                  $_SESSION['id'] = $user['user_id'];
+                  $_SESSION['lastname'] = htmlspecialchars($user["lastname"]);
+                  $_SESSION["name"] = htmlspecialchars($user["name"]);
+              }
+          }
+
+          header("Location: dashboard.php");
+          exit();
+      } else {
+          $loginError = "Nederīgs e-pasts un vai parole!";
+      }
+  }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
