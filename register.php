@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="col-12 col-md-6 col-xl-7">
         <div class="d-flex justify-content-center text-bg-primary">
           <div class="col-12 col-xl-9">
-            <img class="img-fluid rounded mb-4" loading="lazy" src="AdSpot.png" width="245" height="80" alt="">
+            <img class="img-fluid rounded mb-4" loading="lazy" src="Logo.png" width="245" height="80" alt="">
             <hr class="border-primary-subtle mb-4">
             <h2 class="h1 mb-4">Sludinājumu portāls tieši tev.</h2>
             <p class="lead mb-5">Ievieto vai meklē sev tīkamo sludinājumu tieši šeit.</p>

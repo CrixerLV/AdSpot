@@ -1,4 +1,32 @@
 <?php
+
+#COOKIE REMEMBER ME CODE
+session_start();
+if (isset($_SESSION["id"])) {
+    header("Location: dashboard.php");
+    exit();
+}
+if (isset($_COOKIE['user_id']) && isset($_COOKIE['token'])) {
+    require_once "./backend/db_con.php";
+
+    $storedUserId = $_COOKIE['user_id'];
+    $storedToken = $_COOKIE['token'];
+
+    $stmt = $pdo->prepare("SELECT user_id, name, lastname, remember_token FROM users WHERE user_id = ?");
+    $stmt->execute([$storedUserId]);
+    $user = $stmt->fetch();
+
+    if ($user && password_verify($storedToken, $user['remember_token'])) {
+        $_SESSION['id'] = $user['user_id'];
+        $_SESSION['lastname'] = htmlspecialchars($user["lastname"]);
+        $_SESSION['name'] = htmlspecialchars($user["name"]);
+
+        header("Location: dashboard.php");
+        exit();
+    }
+}
+
+#LOGIN LOGIC
 require "./backend/db_con.php";
 $loginError = "";
 
@@ -15,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $user = $stmt->fetch();
 
       if ($user && password_verify($password, $user["password"])) {
-
           $_SESSION["id"] = $user["user_id"];
           $_SESSION['lastname'] = htmlspecialchars($user["lastname"]);
           $_SESSION["name"] = htmlspecialchars($user["name"]);
@@ -47,6 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               }
           }
 
+          session_regenerate_id(true);
           header("Location: dashboard.php");
           exit();
       } else {
@@ -74,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="col-12 col-md-6 col-xl-7">
         <div class="d-flex justify-content-center text-bg-primary">
           <div class="col-12 col-xl-9">
-            <img class="img-fluid rounded mb-4" loading="lazy" src="AdSpot.png" width="245" height="80" alt="">
+            <img class="img-fluid rounded mb-4" loading="lazy" src="Logo.png" width="245" height="80" alt="">
             <hr class="border-primary-subtle mb-4">
             <h2 class="h1 mb-4">Sludinājumu portāls tieši tev.</h2>
             <p class="lead mb-5">Ievieto vai meklē sev tīkamo sludinājumu tieši šeit.</p>
