@@ -130,8 +130,8 @@ include("backend/authorization.php");
                                     $petRow = $petStmt->fetch(PDO::FETCH_ASSOC);
                             
                                     if ($petRow) {
-                                        echo '<p class="card-text"><strong>Kategorija:</strong> ' . $petRow['petCategory'] . '</p>';
-                                        echo '<p class="card-text"><strong>Šķirne:</strong> ' . $petRow['petBreed'] . '</p>';
+                                        echo '<p class="card-text"><strong>Tips:</strong> ' . $petRow['petType'] . '</p>';
+                                        echo '<p class="card-text"><strong>Šķirne:</strong> ' . $petRow['petBrand'] . '</p>';
                                     }
                                     break;
 
@@ -149,17 +149,30 @@ include("backend/authorization.php");
                                     }
                                     break;
 
-                                case 'Elektronika':
-                                    $electronicQuery = "SELECT * FROM electronics WHERE adId = :adId";
-                                    $electronicStmt = $pdo->prepare($electronicQuery);
-                                    $electronicStmt->bindParam(':adId', $adId);
-                                    $electronicStmt->execute();
+                                case 'Mājai, dārzam':
+                                    $furnitureQuery = "SELECT * FROM furniture WHERE adId = :adId";
+                                    $furnitureStmt = $pdo->prepare($furnitureQuery);
+                                    $furnitureStmt->bindParam(':adId', $adId);
+                                    $furnitureStmt->execute();
                             
-                                    $electronicRow = $electronicStmt->fetch(PDO::FETCH_ASSOC);
+                                    $furnitureRow = $furnitureStmt->fetch(PDO::FETCH_ASSOC);
                             
-                                    if ($electronicRow) {
-                                        echo '<p class="card-text"><strong>Tips:</strong> ' . $electronicRow['electronicType'] . '</p>';
-                                        echo '<p class="card-text"><strong>Kategorija:</strong> ' . $electronicRow['electronicBrand'] . '</p>';
+                                    if ($furnitureRow) {
+                                        echo '<p class="card-text"><strong>Tips:</strong> ' . $furnitureRow['furnitureType'] . '</p>';
+                                        echo '<p class="card-text"><strong>Kategorija:</strong> ' . $furnitureRow['furnitureBrand'] . '</p>';
+                                    }
+                                    break;
+                                case 'Darbs un bizness':
+                                    $jobQuery = "SELECT * FROM jobs WHERE adId = :adId";
+                                    $jobStmt = $pdo->prepare($jobQuery);
+                                    $jobStmt->bindParam(':adId', $adId);
+                                    $jobStmt->execute();
+                            
+                                    $jobRow = $jobStmt->fetch(PDO::FETCH_ASSOC);
+                            
+                                    if ($jobRow) {
+                                        echo '<p class="card-text"><strong>Tips:</strong> ' . $jobRow['jobType'] . '</p>';
+                                        echo '<p class="card-text"><strong>Profesija:</strong> ' . $jobRow['jobBrand'] . '</p>';
                                     }
                                     break;
                             }
@@ -168,7 +181,7 @@ include("backend/authorization.php");
                                 echo '<div class="card">';
                                 echo '<div class="card-body">';
                                 echo '<h5 class="card-title">Tirgotāja kontakti</h5>';
-                                echo '<p class="card-text"><strong>Email:</strong> ' . $sellerRow['email'] . '</p>';
+                                echo '<p class="card-text"><strong>E-pasts:</strong> ' . $sellerRow['email'] . '</p>';
                                 echo '<p class="card-text"><strong>Telefons:</strong> ' . $sellerRow['phone'] . '</p>';
                                 echo '</div>';
                                 echo '</div>';
