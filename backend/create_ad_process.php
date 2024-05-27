@@ -2,6 +2,28 @@
 require "db_con.php";
 include("authorization.php");
 
+function addWatermark($sourceImage, $watermarkImage, $destinationImage) {
+    $source = imagecreatefromjpeg($sourceImage);
+    
+    $watermark = imagecreatefrompng($watermarkImage);
+    
+    $sourceWidth = imagesx($source);
+    $sourceHeight = imagesy($source);
+    $watermarkWidth = imagesx($watermark);
+    $watermarkHeight = imagesy($watermark);
+    
+    $padding = 10;
+    $watermarkX = $sourceWidth - $watermarkWidth - $padding;
+    $watermarkY = $sourceHeight - $watermarkHeight - $padding;
+    
+    imagecopy($source, $watermark, $watermarkX, $watermarkY, 0, 0, $watermarkWidth, $watermarkHeight);
+    
+    imagejpeg($source, $destinationImage);
+    
+    imagedestroy($source);
+    imagedestroy($watermark);
+}
+
 if (!isset($pdo)) {
     die("Connection not established. Check your database connection.");
 }
@@ -38,7 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             "Art" => "Gleznas",
             "Plants" => "Augi",
         ];
-        
 
         $latvianAdType = $latvianTranslations[$_POST["adType"]];
 
@@ -51,18 +72,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmtAds->bindParam(':adType', $latvianAdType);
         $stmtAds->bindParam(':sellerId', $_SESSION["id"]);
         $stmtAds->execute();
-        
 
         $adId = $pdo->lastInsertId();
 
         switch ($_POST["adType"]) {
-            case "Vehicle":
+            case "Transports":
                 $vehicleType = isset($_POST["vehicleType"]) ? $_POST["vehicleType"] : null;
                 $vehicleBrand = isset($_POST["vehicleBrand"]) ? $_POST["vehicleBrand"] : null;
-        
+
                 $translatedVehicleType = isset($latvianTranslations[$vehicleType]) ? $latvianTranslations[$vehicleType] : $vehicleType;
                 $translatedVehicleBrand = isset($latvianTranslations[$vehicleBrand]) ? $latvianTranslations[$vehicleBrand] : $vehicleBrand;
-                
+
                 $queryVehicle = "INSERT INTO vehicles (adId, vehicleType, vehicleBrand) VALUES (?, ?, ?)";
                 $stmtVehicle = $pdo->prepare($queryVehicle);
                 $stmtVehicle->bindParam(1, $adId);
@@ -71,13 +91,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtVehicle->execute();
                 break;
 
-            case "Pets":
+            case "Dzīveniki":
                 $petType = isset($_POST["petType"]) ? $_POST["petType"] : null;
                 $petBrand = isset($_POST["petBrand"]) ? $_POST["petBrand"] : null;
-        
+
                 $translatedpetType = isset($latvianTranslations[$petType]) ? $latvianTranslations[$petType] : $petType;
                 $translatedpetBrand= isset($latvianTranslations[$petBrand]) ? $latvianTranslations[$petBrand] : $petBrand;
-                
+
                 $queryPet = "INSERT INTO pets (adId, petType, petBrand) VALUES (?, ?, ?)";
                 $stmtPet = $pdo->prepare($queryPet);
                 $stmtPet->bindParam(1, $adId);
@@ -85,14 +105,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtPet->bindParam(3, $translatedpetBrand);
                 $stmtPet->execute();
                 break;
-        
-            case "Electronic":
+
+            case "Elektronika":
                 $electronicType = isset($_POST["electronicType"]) ? $_POST["electronicType"] : null;
                 $electronicBrand = isset($_POST["electronicBrand"]) ? $_POST["electronicBrand"] : null;
 
                 $translatedelectronicType = isset($latvianTranslations[$electronicType]) ? $latvianTranslations[$electronicType] : $electronicType;
                 $translatedelectronicBrand= isset($latvianTranslations[$electronicBrand]) ? $latvianTranslations[$electronicBrand] : $electronicBrand;
-        
+
                 $queryElectronic = "INSERT INTO electronics (adId, electronicType, electronicBrand) VALUES (?, ?, ?)";
                 $stmtElectronic = $pdo->prepare($queryElectronic);
                 $stmtElectronic->bindParam(1, $adId);
@@ -100,14 +120,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtElectronic->bindParam(3, $translatedelectronicBrand);
                 $stmtElectronic->execute();
                 break;
-        
-            case "Job":
+
+            case "Darbs un bizness":
                 $jobType = isset($_POST["JobType"]) ? $_POST["JobType"] : null;
                 $jobBrand = isset($_POST["JobBrand"]) ? $_POST["JobBrand"] : null;
 
                 $translatedejobType = isset($latvianTranslations[$jobType]) ? $latvianTranslations[$jobType] : $jobType;
                 $translatedejobBrand= isset($latvianTranslations[$jobBrand]) ? $latvianTranslations[$jobBrand] : $jobBrand;
-        
+
                 $queryJob = "INSERT INTO jobs (adId, jobType, jobBrand) VALUES (?, ?, ?)";
                 $stmtJob = $pdo->prepare($queryJob);
                 $stmtJob->bindParam(1, $adId);
@@ -115,14 +135,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtJob->bindParam(3, $translatedejobBrand);
                 $stmtJob->execute();
                 break;
-        
-            case "Furniture":
+
+            case "Mēbeles":
                 $furnitureType = isset($_POST["FurnitureType"]) ? $_POST["FurnitureType"] : null;
                 $furnitureBrand = isset($_POST["FurnitureBrand"]) ? $_POST["FurnitureBrand"] : null;
 
                 $translatedefurnitureType = isset($latvianTranslations[$furnitureType]) ? $latvianTranslations[$furnitureType] : $furnitureType;
                 $translatedefurnitureBrand= isset($latvianTranslations[$furnitureBrand]) ? $latvianTranslations[$furnitureBrand] : $furnitureBrand;
-        
+
                 $queryFurniture = "INSERT INTO furniture (adId, furnitureType, furnitureBrand) VALUES (?, ?, ?)";
                 $stmtFurniture = $pdo->prepare($queryFurniture);
                 $stmtFurniture->bindParam(1, $adId);
@@ -130,28 +150,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtFurniture->bindParam(3, $translatedefurnitureBrand);
                 $stmtFurniture->execute();
                 break;
-        
-            case "Other":
+
+            case "Cits":
                 $othersBrand = isset($_POST["othersBrand"]) ? $_POST["othersBrand"] : null;
-        
+
                 $queryOther = "INSERT INTO others (adId, othersBrand) VALUES (?, ?)";
                 $stmtOther = $pdo->prepare($queryOther);
                 $stmtOther->bindParam(1, $adId);
                 $stmtOther->bindParam(2, $othersBrand);
                 $stmtOther->execute();
                 break;
-        
+
             default:
                 break;
-            }
+        }
 
         if (!empty($_FILES["adImages"]["name"][0])) {
             $imageUploadPath = "C:\\xampp\htdocs\AdSpot\AdImages";
-
+            
+            $watermarkImage = "C:\\xampp\htdocs\AdSpot\LogoMark.png";
+            
             foreach ($_FILES["adImages"]["name"] as $key => $value) {
                 $imageName = time() . '_' . $key . '_' . $_FILES["adImages"]["name"][$key];
                 move_uploaded_file($_FILES["adImages"]["tmp_name"][$key], $imageUploadPath . DIRECTORY_SEPARATOR . $imageName);
-                echo "Error moving file: " . $_FILES["adImages"]["error"][$key];
+                
+                addWatermark($imageUploadPath . DIRECTORY_SEPARATOR . $imageName, $watermarkImage, $imageUploadPath . DIRECTORY_SEPARATOR . $imageName);
+                
                 $imageQuery = "INSERT INTO ad_images (ad_id, image_path) VALUES (:adId, :imageName)";
                 $imageStmt = $pdo->prepare($imageQuery);
                 $imageStmt->bindParam(':adId', $adId);

@@ -1,6 +1,6 @@
 <?php
-require "./backend/db_con.php";
-include("./backend/authorization.php");
+require "backend/db_con.php";
+include("backend/authorization.php");
 
 
 $countQuery = "SELECT COUNT(adId) AS adCount FROM ads";
@@ -15,6 +15,7 @@ $adCount = $countStmt->fetch(PDO::FETCH_ASSOC)['adCount'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AdSpot - Admin Panel</title>
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
+    <link rel="icon" type="image" href="favico.png">    
 </head>
 <body class="bg-dark">
     <div class="container-fluid">
@@ -39,13 +40,11 @@ $adCount = $countStmt->fetch(PDO::FETCH_ASSOC)['adCount'];
         </div>
     </div>
 </nav>
-    <main class="w-100">
-        <div class="position-relative text-center text-white mt-5">
-            <div id="dynamic-content">
-                <embed src="Admin\edit_complaints.php"></embed>
-            </div>
+    <div class="position-relative text-center text-white mt-5">
+        <div id="dynamic-content" class="w-100">
+            <embed class="w-100" src="Admin/edit_complaints.php" style="height: 80vh; border: none;"></embed>
         </div>
-    </main>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
     <script src="https://unpkg.com/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>

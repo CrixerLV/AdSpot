@@ -53,10 +53,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://unpkg.com/bs-brain@2.0.2/components/logins/login-9/assets/css/login-9.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image" href="favico.png">
 
+
+    <style>
+      #externals:hover{
+        transform: scale(1.1);
+        transition: transform 0.1s ease-in-out;
+        color: #0d6efd;
+        cursor: pointer;
+      }
+    </style>
+    
 </head> 
 <body class="bg-dark">
-<section class="bg-primary py-3 py-md-5 py-xl-8">
+<section class="bg-primary py-3 py-md-5 py-xl-8" style="min-height:100vh;">
   <div class="container">
     <div class="row gy-4 align-items-center">
       <div class="col-12 col-md-6 col-xl-7">
@@ -132,5 +144,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 </section>
+<footer class="row bg-dark p-sm-5 p-1 text-white mt-5 m-0 static-bottom">
+    <div class="col-md-3">
+        <div class="row">
+            <div class="p-0">
+                <img src="LogoBetter.png" class="w-100">
+            </div>
+        </div>
+        <div class="row g-0 mt-3">
+            <label class="text-light text-opacity-25 mt-3 mb-3">AdSpot sludinājumu vietne ir labākais un efektīvākais veids, kā tev notirgot savu īpašumu vai piederīgo mantu.</label>
+        </div>
+    </div>
+    <div class="col-md-6 d-sm-flex">
+        <div class="w-50">
+
+        </div>
+        <div class="w-sm-25">
+        <label classs="mb-3"><strong>Pārvietoties</strong></label>
+            <li class="list-group-item"><a href="dashboard.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Sākums</a></li>
+            <li class="list-group-item"><a href="allads.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Visi sludinājumi</a></li>
+            <li class="list-group-item"><a href="create_ad.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Izveidot sludinājumu</a></li>
+            <li class="list-group-item"><a href="profile.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Profils</a></li>
+            <label class="mt-3 mb-1"><strong>Informācija</strong></label>
+            <li class="list-group-item"><a href="#" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Noteikumi</a></li>
+            <li class="list-group-item"><a href="#" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Par mums</a></li>
+        </div>                              
+    </div>
+    <div class="col-md-3">
+        <div class="">
+            <div class="w-100">
+                <div class="text-start">
+                    <label><strong>Ar mums vari sazināties šeit!</strong></label>
+                </div>
+                <div class="d-flex">
+                    <h3 class="m-1"><i id="externals" class="fab fa-instagram-square"></i></h3>
+                    <h3 class="m-1"><i id="externals" class="fab fa-facebook-square"></i></h3>
+                    <h3 class="m-1"><i id="externals" class="fab fa-youtube-square"></i></h3>
+                    <h3 class="m-1"><i id="externals" class="fa-brands fa-square-x-twitter"></i></h3>
+                </div>
+            </div>
+            <div class="mt-5">
+                <div class="input-group">
+                    <input type="text" class="form-control rounded-5 p-2" placeholder="Vieta ieteikumam..." aria-label="Vieta ieteikumiem" aria-describedby="button-addon2">
+                    <button class="btn btn-primary rounded-5 mx-4" type="button" id="button-addon2">Iesniegt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mt-5 mb-5">
+    <p class="text-center text-light italic p-0 m-0">© 2024 AdSpot</p>
+</footer>
 </body>
 </html>

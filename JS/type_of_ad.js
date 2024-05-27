@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     adTypeSelect.addEventListener('change', function () {
         var selectedOption = adTypeSelect.value;
-        if (selectedOption === 'Vehicle') {
+        if (selectedOption === 'Transports') {
             vehicleTypeSection.style.display = 'block';
             furnitureTypeSection.style.display = 'none';
             furnitureBrandSection.style.display = 'none';
@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', function () {
             petBrandSection.style.display = 'none';
             electronicTypeSection.style.display = 'none';
             electronicBrandSection.style.display = 'none';
-        } else if (selectedOption === 'Pets') {
+            otherTypeSection.style.display = "none"
+            otherBrandSection.style.display = "none"
+        } else if (selectedOption === 'Dzīvnieki') {
             vehicleTypeSection.style.display = 'none';
             vehicleBrandSection.style.display = 'none';
             furnitureTypeSection.style.display = 'none';
@@ -53,7 +55,9 @@ document.addEventListener('DOMContentLoaded', function () {
             petTypeSection.style.display = 'block';
             electronicTypeSection.style.display = 'none';
             electronicBrandSection.style.display = 'none';
-        } else if (selectedOption === 'Job'){
+            otherTypeSection.style.display = "none"
+            otherBrandSection.style.display = "none"
+        } else if (selectedOption === 'Darbs un bizness'){
             vehicleTypeSection.style.display = 'none';
             vehicleBrandSection.style.display = 'none';
             furnitureTypeSection.style.display = 'none';
@@ -63,7 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
             petBrandSection.style.display = 'none';
             electronicTypeSection.style.display = 'none';
             electronicBrandSection.style.display = 'none';
-        } else if (selectedOption === 'Electronic'){
+            otherTypeSection.style.display = "none"
+            otherBrandSection.style.display = "none"
+        } else if (selectedOption === 'Elektronika'){
             vehicleTypeSection.style.display = 'none';
             vehicleBrandSection.style.display = 'none';
             furnitureTypeSection.style.display = 'none';
@@ -73,8 +79,10 @@ document.addEventListener('DOMContentLoaded', function () {
             petTypeSection.style.display = 'none';
             petBrandSection.style.display = 'none';
             electronicTypeSection.style.display = 'block';
+            otherTypeSection.style.display = "none"
+            otherBrandSection.style.display = "none"
         }
-        else if (selectedOption === 'Furniture'){
+        else if (selectedOption === 'Mēbeles'){
             vehicleTypeSection.style.display = 'none';
             vehicleBrandSection.style.display = 'none';
             jobTypeSection.style.display = 'none';
@@ -84,8 +92,10 @@ document.addEventListener('DOMContentLoaded', function () {
             electronicTypeSection.style.display = 'none';
             electronicBrandSection.style.display = 'none';
             furnitureTypeSection.style.display = "block"
+            otherTypeSection.style.display = "none"
+            otherBrandSection.style.display = "none"
         }
-        else if (selectedOption === 'Other'){
+        else if (selectedOption === 'Cits'){
             vehicleTypeSection.style.display = 'none';
             vehicleBrandSection.style.display = 'none';
             jobTypeSection.style.display = 'none';
@@ -104,19 +114,19 @@ document.addEventListener('DOMContentLoaded', function () {
     vehicleTypeSelect.addEventListener('change', function () {
         var selectedVehicleType = vehicleTypeSelect.value;
 
-        if (selectedVehicleType === 'Cars') {
+        if (selectedVehicleType === 'Vieglā automašina') {
             var carBrands = ['Audi', 'BMW', 'Mercedes', 'Volvo', 'Toyota', 'Honda', 'Ford', 'Volkswagen', 'Chevrolet', 'Nissan', 'Hyundai', 'Subaru', 'Mazda', 'Lexus', 'Kia', 'Jeep', 'Tesla', 'Ferrari', 'Porsche', 'Jaguar', 'Land Rover', 'Maserati', 'Aston Martin', 'Cits'];
             populateVehicleBrands(carBrands);
-        } else if (selectedVehicleType === 'Heavy') {
+        } else if (selectedVehicleType === 'Smagā automašīna') {
             var heavyBrands = ['Caterpillar', 'Komatsu', 'John Deere', 'Liebherr', 'Hitachi', 'Terex', 'Volvo CE', 'SANY', 'Doosan', 'XCMG', 'Kobelco', 'JCB', 'Case', 'Bomag', 'Wirtgen', 'SDLG', 'Cits'];
             populateVehicleBrands(heavyBrands);
-        } else if (selectedVehicleType === 'Motorcycles') {
+        } else if (selectedVehicleType === 'Motocikls') {
             var motorcycleBrands = ['Harley-Davidson', 'Honda', 'Yamaha', 'Kawasaki', 'Suzuki', 'Ducati', 'BMW Motorrad', 'Triumph', 'KTM', 'Indian Motorcycle', 'Aprilia', 'Moto Guzzi', 'Piaggio', 'Royal Enfield', 'Cits'];
             populateVehicleBrands(motorcycleBrands);
-        } else if (selectedVehicleType === 'WaterTransport') {
+        } else if (selectedVehicleType === 'Ūdens transports') {
             var boatBrands = ['Boston Whaler', 'Grady-White', 'Yamaha Boats', 'Sea Ray', 'Malibu Boats', 'MasterCraft', 'Beneteau', 'Hobie Cat', 'Lund Boats', 'Sunseeker', 'Regal Boats', 'Azimut Yachts', 'Bertram', 'Cobalt Boats', 'Formula Boats', 'Jeanneau', 'Sun Tracker', 'Tracker Boats', 'Cits'];
             populateVehicleBrands(boatBrands);
-        } else if (selectedVehicleType === 'FarmEquipment') {
+        } else if (selectedVehicleType === 'Lauksaimniecības tehnika') {
             var farmEquipmentBrands = ['John Deere', 'Case IH', 'New Holland', 'Kubota', 'Massey Ferguson', 'AGCO', 'Mahindra', 'Fendt', 'Challenger', 'Versatile', 'JCB', 'Valtra', 'Claas', 'McCormick', 'Same Deutz-Fahr', 'Cits'];
             populateVehicleBrands(farmEquipmentBrands);
         }
@@ -126,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function () {
     petTypeSelect.addEventListener('change', function () {
         var selectedPetType = petTypeSelect.value;
         
-        if (selectedPetType === 'Dog') {
+        if (selectedPetType === 'Suns') {
             var dogBrands = [
                 'Buldogs', 'Labradors', 'Retrīvers', 'Šnaucērs', 'Vjekšnis', 'Bigls', 'Rottvailers', 
                 'Nūfāundlenders', 'Šarpejs', 'Pūdels', 'Dalmatiņš', 'Bāzēnu džeks', 'Kavalerkinga španiēls', 
@@ -134,30 +144,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Samojeds', 'Airedeli terjers', 'Kairni terjers', 'Alabai', 'Mopss', 'Akita', 'Cits'
             ];
             populatePetBrands(dogBrands);
-        } else if (selectedPetType === 'Cat') {
+        } else if (selectedPetType === 'Kaķis') {
             var catBrands = [
                 'Persietis', 'Maine Coons', 'Siamieši', 'Ragdolls', 'Bengāļi', 'Sfinksi', 'Skotu šķirnes',
                 'Britu īsspalvainie', 'Abyssinians', 'Birma', 'Birmans', 'Krievu zilie', 'Norvēģu meža kaķi', 'Sibīrieši', 'Orientāļu īsspalvainie',
                 'Kornvolas reksi', 'Devon reksi', 'Menks', 'Himalaji', 'Turku angore', 'Turku vans', 'Balinezijs', 'Javāņi', 'Cits'
             ];
             populatePetBrands(catBrands);
-        } else if (selectedPetType === 'Rats') {
+        } else if (selectedPetType === 'Grauzējs') {
             var ratBrands = [
                 'Degu', 'Fretkas', 'Seski', 'Jūrascūciņas', 'Kāmji', 'Mājas žurkas', 'Šinšilas',
                 'Truši', 'Cits'
             ];
             populatePetBrands(ratBrands);
-        } else if (selectedPetType === 'Fish') {
+        } else if (selectedPetType === 'Zivs') {
             var fishBrands = [
                 'Zivtiņas', 'Akvāriji', 'Barība', 'Ūdens augi', 'Cits'
             ];
             populatePetBrands(fishBrands);
-        } else if (selectedPetType === 'Birds') {
+        } else if (selectedPetType === 'Putns') {
             var birdBrands = [
                 'Kanārijputniņi', 'Papagaiļi', 'Barība', 'Būri', 'Cits'
             ];
             populatePetBrands(birdBrands);
-        } else if (selectedPetType === 'BigAnimals') {
+        } else if (selectedPetType === 'Lauksaimniecības dzīvnieks') {
             var bigBrands = [
                 'Auni, Aitas', 'Kazas', 'Cūkas', 'Liellopi', 'Zirgi, ēzeļi', 'Zaķi, Nūtrijas', 'Cits'
             ];
@@ -169,32 +179,32 @@ document.addEventListener('DOMContentLoaded', function () {
     electronicTypeSelect.addEventListener('change', function () {
         var selectedElectronicType = electronicTypeSelect.value;
 
-        if (selectedElectronicType === 'Contact') {
+        if (selectedElectronicType === 'Sakaru līdzeklis') {
             var contactBrands = [
                 'Samsung', 'Apple', 'Huawei', 'Xiaomi', 'OnePlus', 'Google Pixel', 'Sony', 'LG', 'Motorola', 'Nokia', 'OPPO', 'Vivo', 'Realme', 'Asus', 'BlackBerry', 'HTC', 'Lenovo', 'ZTE', 'Alcatel', 'Cits'
             ];
             populateElectronicBrands(contactBrands);
-        } else if (selectedElectronicType === 'Life') {
+        } else if (selectedElectronicType === 'Sadzīves tehnika') {
             var lifeTypes = [
                 'Krāsns', 'Matu žāvētāji', 'Putekļsūcēji', 'Blenderi', 'Tējkannas', 'Kafijas automāti', 'Mikroviļņu krāsns', 'Gludeklis', 'Elektriskās tējkannas', 'Pārtikas apstrādes iekārtas', 'Ventilatori', 'Sildītāji', 'Gaisa attīrītāji', 'Cits'
             ];
             populateElectronicBrands(lifeTypes);
-        } else if (selectedElectronicType === 'Computer') {
+        } else if (selectedElectronicType === 'Dators') {
             var computerTypes = [
                 'Stacionārais dators', 'Klēpjdators', 'Planšetdators', 'Mini dators', 'Gaming dators', 'Serveris', 'Superdators', 'Cits'
             ];
             populateElectronicBrands(computerTypes);
-        } else if (selectedElectronicType === 'Audio') {
+        } else if (selectedElectronicType === 'Audio tehnika') {
             var audioTypes = [
                 'Austiņas', 'Skaļruņi', 'Pastiprinātāji', 'Bezvadu austiņas', 'Bluetooth skaļruņi', 'Hi-Fi sistēmas', 'Mikrofoni', 'Stereosistēmas', 'Aparatūra koncertiem', 'Cits'
             ];
             populateElectronicBrands(audioTypes);
-        } else if (selectedElectronicType === 'Video') {
+        } else if (selectedElectronicType === 'Video tehnika') {
             var videoTypes = [
                 'Projektori', 'Blu-ray atskaņotāji', 'Video kameru komplekti', 'Video ierakstītāji', 'LED ekrāni', 'Videokameras', 'Videokameru aksesuāri', 'Kino sistēmas', 'Cits'
             ];
             populateElectronicBrands(videoTypes);
-        } else if (selectedElectronicType === 'TV') {
+        } else if (selectedElectronicType === 'Televizors') {
             var tvBrands = [
                 'Samsung', 'LG', 'Sony', 'Philips', 'Panasonic', 'Toshiba', 'Sharp', 'Hisense', 'TCL', 'JVC', 'Grundig', 'Metz', 'Bang & Olufsen', 'Loewe', 'Pioneer', 'Cits'
             ];
@@ -206,18 +216,18 @@ document.addEventListener('DOMContentLoaded', function () {
     jobTypeSelect.addEventListener('change', function () {
         var selectedJobType = jobTypeSelect.value;
 
-        if (selectedJobType === 'Vacancy') {
+        if (selectedJobType === 'Vakance') {
             var vacancyBrands = ['Programmētājs', 'Dizainers', 'Menedžeris', 'Grāmatvedis', 'Mākslinieks', 'Projektu vadītājs', 'Jurists', 'Ārsts', 'Skolotājs', 'Inženieris', 'Zinātnieks', 'Reklāmas aģents', 'Pārdevējs', 'Kopējs', 'Automehāniķis', 'Kokapstrādes darbinieks',
                 'Elektriķis', 'Pavārs', 'Frizieris', 'Autors', 'Ēku uzturēšanas darbinieks', 'Mājsaimniece', 'Tulkotājs', 'Cits'
             ];
             populateJobBrands(vacancyBrands);
-        } else if (selectedJobType === 'Courses') {
+        } else if (selectedJobType === 'Kursi') {
             var CourseTypes = [
                 'Programmēšanas kursi', 'Dizaina kursi', 'Valodu apguves kursi', 'Biznesa kursi', 'Finanšu kursi', 'Zinātnes kursi', 'Mākslas kursi', 'Fotogrāfijas kursi', 'Kulinārijas kursi', 'Sports un veselība', 'Personības attīstība', 'Mūzikas kursi', 'Datorspēļu attīstība',
                 'Tehniskie kursi', 'Profesionālās apmācības', 'Radošums un rokdarbi', 'Zinātne un tehnoloģijas', 'Vides un dārzkopības kursi', 'Cits'
             ];            
             populateJobBrands(CourseTypes);
-        } else if (selectedJobType === 'Job') {
+        } else if (selectedJobType === 'Darbs un bizness') {
             var jobTypes = [
                 'Pilna laika', 'Puslaika', 'Darbs no mājām', 'Mājas saimnieks/-niece', 'Ārzemēs', 'Darbs uz noteiktu laiku', 'Brīvprātīgais darbs', 'Cits'
             ];            
@@ -229,19 +239,19 @@ document.addEventListener('DOMContentLoaded', function () {
     furnitureTypeSelect.addEventListener('change', function () {
         var selectedFurnitureType = furnitureTypeSelect.value;
 
-        if (selectedFurnitureType === 'Furniture') {
+        if (selectedFurnitureType === 'Mājai, dārzam') {
             var FurnitureTypes = [
                 'Galdi', 'Krēsli', 'Sistemas', 'Gultas', 'Skapji', 'Gultekas', 'Stali', 'Mēbeļu komplekti', 'Biroja mēbeles', 'Dīvāni', 'Plaukti', 'Virtuves mēbeles', 'Vannasistabas mēbeles', 'Audums un ādas',
                 'Dārza mēbeles', 'Bērnu mēbeles', 'Cits'];
             populateFurnitureBrands(FurnitureTypes);
-        } else if (selectedFurnitureType === 'Art') {
+        } else if (selectedFurnitureType === 'Gleznas') {
             var ArtTypes = [
                 'Akrils', 'Eļļa uz audekla', 'Akvareļi', 'Zīmulis un zīmulis', 'Kombinētie mediji', 'Pasteļi', 'Zīmējumi', 'Tekstūra un reliēfs', 'Fotorealisms',
                 'Abstrakcija', 'Impresionisms', 'Ekspresionisms', 'Futūrisms', 'Pop māksla', 'Kubisms', 'Surreālisms', 'Modernisms', 'Minimalisms', 'Grafika un gravīra', 'Digitālā māksla', 'Cits'
             ];
             
             populateFurnitureBrands(ArtTypes);
-        } else if (selectedFurnitureType === 'Plants') {
+        } else if (selectedFurnitureType === 'Augi') {
             var PlantTypes = [
                 'Majas augi', 'Dārza augi', 'Ziedi', 'Zāles un ēdama raža', 'Majas kaktusi', 'Puķes un puķu dārzs', 'Dārza koki un krūmi',
                 'Dārza dizains un kopšana', 'Hidroponika un aeroponika', 'Dārza instrumenti un aprīkojums', 'Cits'

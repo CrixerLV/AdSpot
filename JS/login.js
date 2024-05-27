@@ -6,6 +6,6 @@ function showLoadingOverlay() {
   
     setTimeout(() => {
       document.body.removeChild(overlay);
-    }, 1000); // 1000 milliseconds (1 second)
+    }, 1000);
   }
   
