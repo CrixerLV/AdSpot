@@ -74,7 +74,7 @@ $showWarning = empty($user['phone']);
                 </ul>
                 <?php
                 if (isset($_SESSION['name']) && isset($_SESSION['lastname'])) {
-                    echo '<div class="dropdown ms-auto me-5 d-flex flex-row align-items-center justify-content-center">';
+                    echo '<div class="dropdown ms-auto me-sm-5 me-0 d-flex flex-row align-items-center justify-content-center">';
                     echo '<a href="#" class="nav-link nav-item dropdown-toggle text-center" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">' . $_SESSION['name'] . ' ' . $_SESSION['lastname'] . '</a>';
                     echo '<ul class="dropdown-menu mx-0" aria-labelledby="dropdownMenuLink">';
                     echo '<li><a class="dropdown-item" href="profile.php">Profils</a></li>';
@@ -139,7 +139,7 @@ $showWarning = empty($user['phone']);
         <div class="row">
             <div class="col-md-4">
                 <div class="card text-dark bg-light mb-3" style="border-radius:0px">
-                    <img src="Logo.png" class="card-img-top mx-auto img-fluid" alt="Card Image" style="width: 128px; height: 128px; object-fit: contain;">
+                    <img src="LogoBetter.png" class="card-img-top mx-auto img-fluid" alt="Card Image" style="width: 128px; height: 128px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Izveido savu sludinājumu</h5>
                         <p class="card-text">Publicē savu unikālo sludinājumu mūsu platformā, lai atrastu potenciālos pircējus!</p>
@@ -149,7 +149,7 @@ $showWarning = empty($user['phone']);
 
             <div class="col-md-4">
                 <div class="card text-dark bg-light mb-3" style="border-radius:0px">
-                    <img src="Logo.png" class="card-img-top mx-auto img-fluid" alt="Card Image" style="width: 128px; height: 128px; object-fit: contain;">
+                    <img src="LogoBetter.png" class="card-img-top mx-auto img-fluid" alt="Card Image" style="width: 128px; height: 128px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Apskati pieejamos sludinājumus</h5>
                         <p class="card-text">Atrast dažādus sev nepieciešamos sludinājumus tieši šeit .</p>
@@ -159,7 +159,7 @@ $showWarning = empty($user['phone']);
 
             <div class="col-md-4">
                 <div class="card text-dark bg-light mb-3" style="border-radius:0px">
-                    <img src="Logo.png" class="card-img-top mx-auto img-fluid" alt="Card Image" style="width: 128px; height: 128px; object-fit: contain;">
+                    <img src="LogoBetter.png" class="card-img-top mx-auto img-fluid" alt="Card Image" style="width: 128px; height: 128px; object-fit: contain;">
                     <div class="card-body">
                         <h5 class="card-title">Saņem jaunumus un piedāvājumus</h5>
                         <p class="card-text">Reģistrējies, lai saņemtu jaunākos sludinājumus un izdevīgus piedāvājumus.</p>
@@ -180,10 +180,7 @@ $showWarning = empty($user['phone']);
         </div>
     </div>
     <div class="col-md-6 d-sm-flex">
-        <div class="w-50">
-
-        </div>
-        <div class="w-sm-25">
+        <div class="w-sm-25 mx-auto">
         <label classs="mb-3"><strong>Pārvietoties</strong></label>
             <li class="list-group-item"><a href="dashboard.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Sākums</a></li>
             <li class="list-group-item"><a href="allads.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Visi sludinājumi</a></li>

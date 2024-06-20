@@ -11,13 +11,13 @@ if(isset($_GET['adId'])) {
     $stmt->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
 
     if ($stmt->execute()) {
-        header("Location: \AdSpot\user_ads.php");
+        header("Location: /user_ads.php");
         exit();
     } else {
         echo "Error deleting ad.";
     }
 } else {
-    header("Location: \AdSpot\user_ads.php");
+    header("Location: /user_ads.php");
     exit();
 }
 ?>

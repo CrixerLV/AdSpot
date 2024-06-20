@@ -8,6 +8,6 @@ setcookie('token', '', time() - 3600, '/');
 $_SESSION = array();
 session_destroy();
 
-header("Location: ../login.php");
+header("Location: /index.php");
 exit();
 ?>

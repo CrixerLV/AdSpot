@@ -28,10 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $updateStmt->execute();
     $updateVotesStmt->execute();
 
-    header("Location: /Adspot/SeeAd.php?adId={$_POST['ad_id']}");
+    header("Location: /SeeAd.php?adId={$_POST['ad_id']}");
     exit;
 } else {
-    header("Location: /Adspot/SeeAd.php");
+    header("Location: /SeeAd.php");
     exit;
 }
 ?>

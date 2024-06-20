@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt = $pdo->prepare($sql);
 
             if ($stmt->execute([$email, $hashedPassword, $name, $lastname])) {
-                header("Location: login.php");
+                header("Location: index.php");
                 exit();
             } else {
                 $registrationError = "Reģistrācija neizdevās!";
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="col-12 col-md-6 col-xl-7">
         <div class="d-flex justify-content-center text-bg-primary">
           <div class="col-12 col-xl-9">
-            <img class="img-fluid rounded mb-4" loading="lazy" src="Logo.png" width="245" height="80" alt="">
+            <img class="img-fluid rounded mb-4" loading="lazy" src="LogoBetter.png" width="245" height="80" alt="">
             <hr class="border-primary-subtle mb-4">
             <h2 class="h1 mb-4">Sludinājumu portāls tieši tev.</h2>
             <p class="lead mb-5">Ievieto vai meklē sev tīkamo sludinājumu tieši šeit.</p>
@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <div class="col-12">
                 <div class="mb-4">
                   <h3>Reģistrācija</h3>
-                  <p>Jau esi reģistrējies? <a href="login.php">Autorizēties</a></p>
+                  <p>Jau esi reģistrējies? <a href="index.php">Autorizēties</a></p>
                   <h3 style="color:red; font-size: 16px;"><?php echo $registrationError; ?></h3>
                 </div>
               </div>

@@ -47,7 +47,7 @@ $showWarning = empty($user['phone']);
 <body class="bg-light" style="font-family: 'Open Sans', sans-serif;">
     <?php if ($showWarning): ?>
         <div class="alert alert-warning alert-dismissible text-center rounded-0" role="alert">
-            Lūdzu pirms veido sludinājumu <a href="profile.php" class="alert-link">dodies uz profilu</a> un atjauno informāciju!
+            Lūdzu <a href="profile.php" class="alert-link">dodies uz profilu</a> un atjauno informāciju!
         </div>
     <?php endif; ?>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">

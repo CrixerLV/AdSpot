@@ -48,14 +48,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $pdo->commit();
 
-        header("Location: /Adspot/SeeAd.php?adId={$ad_id}");
+        header("Location: /SeeAd.php?adId={$ad_id}");
         exit;
     } catch (Exception $e) {
         $pdo->rollBack();
         echo "Failed: " . $e->getMessage();
     }
 } else {
-    header("Location: /Adspot/SeeAd.php");
+    header("Location: /SeeAd.php");
     exit;
 }
 ?>

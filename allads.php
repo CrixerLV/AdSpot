@@ -3,6 +3,21 @@ require "backend/db_con.php";
 include("backend/authorization.php");
 
 $minPrice = $maxPrice = $location = $adType = $var1 = $var2 = "";
+$adsPerPage = 9;
+
+$page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+
+$userid = $_SESSION['id'];
+
+$sql = "SELECT * FROM users WHERE user_id = :user_id";
+$stmt = $pdo->prepare($sql);
+
+$stmt->bindParam(':user_id', $_SESSION['id'], PDO::PARAM_INT);
+$stmt->execute();
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+$showWarning = empty($user['phone']);
+
 ?>
 
 <!DOCTYPE html>
@@ -41,6 +56,11 @@ $minPrice = $maxPrice = $location = $adType = $var1 = $var2 = "";
     </style>
 </head>
 <body class="bg-light" style="font-family: 'Open Sans', sans-serif;">
+    <?php if ($showWarning): ?>
+        <div class="alert alert-warning alert-dismissible text-center rounded-0" role="alert">
+            Lūdzu <a href="profile.php" class="alert-link">dodies uz profilu</a> un atjauno informāciju!
+        </div>
+    <?php endif; ?>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container-fluid ">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -89,7 +109,7 @@ $minPrice = $maxPrice = $location = $adType = $var1 = $var2 = "";
             </div>
         </div>
     </nav>  
-<div class="container-fluid mt-4 mb-4" style="height: 100vh;">
+<div class="container mt-4 text-dark" style="min-height: 100vh; margin-bottom: 80px;">
 <form id="filterForm" method="GET" action="<?php echo $_SERVER['PHP_SELF']; ?>" class="bg-white p-2 rounded">
     <div class="bg-white p-2 rounded">
         <div class="row">
@@ -245,7 +265,8 @@ $minPrice = $maxPrice = $location = $adType = $var1 = $var2 = "";
 
 <div class="container mt-4 mb-5 pb-5">
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
+    $totalPages = 0;
+if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET) && (!isset($_GET['page']))) {
     $minPrice = isset($_GET['priceMin']) ? $_GET['priceMin'] : "";
     $maxPrice = isset($_GET['priceMax']) ? $_GET['priceMax'] : "";
 
@@ -310,27 +331,39 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
         if (!empty($adType)) {
             switch ($adType) {
                 case "Elektronika":
-                    if (!empty($var1)) {
-                        $query .= " AND electronics.electronicType = '$var1'";
-                    }
-                    if (!empty($var2)) {
-                        $query .= " AND electronics.electronicBrand = '$var2'";
+                    if ($var1 = "Izvēlies" && $var2 = "Izvēlies") {
+                        $query .= " AND (electronics.electronicType IS NOT NULL OR electronics.electronicBrand IS NOT NULL)";
+                    } else {
+                        if (!empty($var1)) {
+                            $query .= " AND electronics.electronicType = '$var1'";
+                        }
+                        if (!empty($var2)) {
+                            $query .= " AND electronics.electronicBrand = '$var2'";
+                        }
                     }
                     break;
                 case "Mēbeles":
-                    if (!empty($var1)) {
-                        $query .= " AND furniture.furnitureType = '$var1'";
-                    }
-                    if (!empty($var2)) {
-                        $query .= " AND furniture.furnitureBrand = '$var2'";
+                    if ($var1 = "Izvēlies" && $var2 = "Izvēlies") {
+                        $query .= " AND (furniture.furnitureType IS NOT NULL OR furniture.furnitureBrand IS NOT NULL)";
+                    } else {
+                        if (!empty($var1)) {
+                            $query .= " AND furniture.furnitureType = '$var1'";
+                        }
+                        if (!empty($var2)) {
+                            $query .= " AND furniture.furnitureBrand = '$var2'";
+                        }
                     }
                     break;
                 case "Darbs un bizness":
-                    if (!empty($var1)) {
-                        $query .= " AND jobs.jobType = '$var1'";
-                    }
-                    if (!empty($var2)) {
-                        $query .= " AND jobs.jobBrand = '$var2'";
+                    if ($var1 = "Izvēlies" && $var2 = "Izvēlies") {
+                        $query .= " AND (jobs.jobType IS NOT NULL OR jobs.jobBrand IS NOT NULL)";
+                    } else {
+                        if (!empty($var1)) {
+                            $query .= " AND jobs.jobType = '$var1'";
+                        }
+                        if (!empty($var2)) {
+                            $query .= " AND petjobss.jobBrand = '$var2'";
+                        }
                     }
                     break;
                 case "Cits":
@@ -339,19 +372,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
                     }
                     break;
                 case "Dzīvnieki":
-                    if (!empty($var1)) {
-                        $query .= " AND pets.petType = '$var1'";
-                    }
-                    if (!empty($var2)) {
-                        $query .= " AND pets.petBrand = '$var2'";
+                    if ($var1 = "Izvēlies" && $var2 = "Šķirne") {
+                        $query .= " AND (pets.petType IS NOT NULL OR pets.petBrand IS NOT NULL)";
+                    } else {
+                        if (!empty($var1)) {
+                            $query .= " AND pets.petType = '$var1'";
+                        }
+                        if (!empty($var2)) {
+                            $query .= " AND pets.petBrand = '$var2'";
+                        }
                     }
                     break;
                 case "Transports":
-                    if (!empty($var1)) {
-                        $query .= " AND vehicles.vehicleType = '$var1'";
-                    }
-                    if (!empty($var2)) {
-                        $query .= " AND vehicles.vehicleBrand = '$var2'";
+                    if (empty($var1) && $var2 = "Marka") {
+                        $query .= " AND (vehicles.vehicleType IS NOT NULL OR vehicles.vehicleBrand IS NOT NULL)";
+                    } else {
+                        if (!empty($var1)) {
+                            $query .= " AND vehicles.vehicleType = '$var1'";
+                        }
+                        if (!empty($var2)) {
+                            $query .= " AND vehicles.vehicleBrand = '$var2'";
+                        }
                     }
                     break;
                 default:
@@ -369,7 +410,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {?>
                 <div class="col">
                     <a href="SeeAd.php?adId=<?php echo $row['adId']; ?>" class="card bg-white h-100 text-decoration-none p-3" style="border-radius: 0; border: 0">
-                        <img src="/AdSpot/AdImages/<?php echo $row['image_path']; ?>" class="card-img-top" alt="Ad Image" style="height: 200px; object-fit: cover;">
+                        <img src="/AdImages/<?php echo $row['image_path']; ?>" class="card-img-top" alt="Ad Image" style="height: 200px; object-fit: cover;">
                         <div class="p-2">
                             <h5 class="card-title"><?php echo $row['adName']; ?></h5>
                             <p class="card-text text-muted"><i class="fas fa-tags  text-dark"></i><?php echo $row['adType']; ?></p>
@@ -387,26 +428,47 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
         } else {
             echo "<h1 class='text-dark text-center'>Nekas netika atrasts!</h1>";
         }
+        echo '<ul class="pagination justify-content-center mt-4">';
+        for ($i = 1; $i <= $totalPages; $i++) {
+            echo '<li class="page-item' . ($page == $i ? ' active' : '') . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+        }
+        echo '</ul>';
     } catch (PDOException $e) {
         echo "Error: " . $e->getMessage();
     }
-} else if(empty($_GET)) {
+} else {
     try {
+        $page = 1;
+        $countQuery = "SELECT COUNT(*) AS total FROM ads WHERE status = 1";
+        $countStmt = $pdo->query($countQuery);
+        $totalAds = $countStmt->fetch(PDO::FETCH_ASSOC)['total'];
+    
+        $totalPages = ceil($totalAds / $adsPerPage);
+    
+        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? $_GET['page'] : 1;
+    
+        $page = max(1, min($page, $totalPages));
+    
+        $offset = ($page - 1) * $adsPerPage;
+    
         $query = "SELECT ads.adId, ads.adName, ads.adType, ads.adLocation, ads.adPrice, ads.created_at, MIN(ad_images.image_path) as image_path 
                     FROM ads 
                     LEFT JOIN ad_images ON ads.adId = ad_images.ad_id
                     WHERE ads.status = 1";
+    
         $query .= " GROUP BY ads.adId";
         
+        $query .= " LIMIT $adsPerPage OFFSET $offset";
+        
         $stmt = $pdo->query($query);
-
+    
         $rowCount = $stmt->rowCount();
         if ($rowCount > 0) {
             echo '<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">';
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {?>
                 <div class="col">
                     <a href="SeeAd.php?adId=<?php echo $row['adId']; ?>" class="card bg-white h-100 text-decoration-none p-3" style="border-radius: 0; border: 0">
-                        <img src="/AdSpot/AdImages/<?php echo $row['image_path']; ?>" class="card-img-top" alt="Ad Image" style="height: 200px; object-fit: cover;">
+                        <img src="/AdImages/<?php echo $row['image_path']; ?>" class="card-img-top" alt="Ad Image" style="height: 200px; object-fit: cover;">
                         <div class="p-2">
                             <h5 class="card-title"><?php echo $row['adName']; ?></h5>
                             <p class="card-text text-muted"><i class="fas fa-tags  text-dark"></i><?php echo $row['adType']; ?></p>
@@ -421,6 +483,11 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
                 <?php
             }
             echo '</div>';
+            echo '<ul class="pagination justify-content-center mt-4">';
+            for ($i = 1; $i <= $totalPages; $i++) {
+                echo '<li class="page-item' . ($page == $i ? ' active' : '') . '"><a class="page-link" href="?page=' . $i . '">' . $i . '</a></li>';
+            }
+            echo '</ul>';
         } else {
             echo "<h1 class='text-dark text-center'>Nekas netika atrasts!</h1>";
         }
@@ -431,7 +498,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET" && !empty($_GET)) {
 ?>
 </div>
 </div>
-<footer class="row bg-dark p-sm-5 p-1 text-white mt-5 m-0 static-bottom">
+<footer class="row footer bg-dark mt-auto py-3 p-sm-5 p-1 text-white mt-5 m-0">
     <div class="col-md-3">
         <div class="row">
             <div class="p-0">

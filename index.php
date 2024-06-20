@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       <div class="col-12 col-md-6 col-xl-7">
         <div class="d-flex justify-content-center text-bg-primary">
           <div class="col-12 col-xl-9">
-            <img class="img-fluid rounded mb-4" loading="lazy" src="Logo.png" width="245" height="80" alt="">
+            <img class="img-fluid rounded mb-4" loading="lazy" src="LogoBetter.png" width="245" height="80" alt="">
             <hr class="border-primary-subtle mb-4">
             <h2 class="h1 mb-4">Sludinājumu portāls tieši tev.</h2>
             <p class="lead mb-5">Ievieto vai meklē sev tīkamo sludinājumu tieši šeit.</p>
@@ -147,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
                 <div class="col-12">
                   <div class="form-floating mb-3">
-                    <input type="password" class="form-control" name="password" id="password" value="" placeholder="Password" required>
+                    <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
                     <label for="password" class="form-label">Parole</label>
                   </div>
                 </div>
@@ -166,13 +166,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 </div>
               </div>
             </form>
-            <div class="row">
-              <div class="col-12">
-                <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4">
-                  <a href="#!">Aizmirsu paroli</a>
-                </div>
+            <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                      <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end mt-4">
+                          <a href="#!" data-toggle="modal" data-target="#resetPasswordModal">Aizmirsu paroli</a>
+                      </div>
+                  </div>
               </div>
-            </div>
+          </div>
+          <div class="modal fade" id="resetPasswordModal" tabindex="-1" aria-labelledby="resetPasswordModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="resetPasswordModalLabel">Paroles atjaunošana</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <form id="resetPasswordForm" method="POST" action="backend/reset_password.php">
+                              <div class="form-group">
+                                  <label for="emailreset">E-pasts</label>
+                                  <input type="email" class="form-control" id="emailreset" name="emailreset" required>
+                              </div>
+                              <button type="submit" class="btn btn-primary mt-2 mb-3">Atjaunot paroli</button>
+                          </form>
+                          <div id="resetPasswordMessage" class="mt-3"></div>
+                      </div>
+                  </div>
+              </div>
           </div>
         </div>
       </div>
@@ -194,12 +217,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="w-50">
 
         </div>
-        <div class="w-sm-25">
-        <label classs="mb-3"><strong>Pārvietoties</strong></label>
-            <li class="list-group-item"><a href="dashboard.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Sākums</a></li>
-            <li class="list-group-item"><a href="allads.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Visi sludinājumi</a></li>
-            <li class="list-group-item"><a href="create_ad.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Izveidot sludinājumu</a></li>
-            <li class="list-group-item"><a href="profile.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Profils</a></li>
+        <div class="w-sm-25"> 
             <label class="mt-3 mb-1"><strong>Informācija</strong></label>
             <li class="list-group-item"><a href="#" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Noteikumi</a></li>
             <li class="list-group-item"><a href="#" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Par mums</a></li>
@@ -230,5 +248,48 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p class="text-center text-light italic p-0 m-0">© 2024 AdSpot</p>
 </footer>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#resetPasswordForm').submit(function(event) {
+        event.preventDefault();
+
+        $('#resetPasswordForm button[type="submit"]').prop('disabled', true);
+
+        var formData = $(this).serialize();
+        var resetPasswordMessage = $('#resetPasswordMessage');
+
+        $.ajax({
+            type: 'POST',
+            url: 'backend/reset_password.php',
+            data: formData,
+            dataType: 'json',
+            success: function(response) {
+                resetPasswordMessage.empty();
+                resetPasswordMessage.removeClass();
+                
+                if (response.status === 'success') {
+                    resetPasswordMessage.addClass('alert alert-success');
+                    resetPasswordMessage.text(response.message);
+                } else {
+                    resetPasswordMessage.addClass('alert alert-danger');
+                    resetPasswordMessage.text(response.message);
+                }
+
+                $('#resetPasswordForm button[type="submit"]').prop('disabled', true);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                resetPasswordMessage.empty();
+                resetPasswordMessage.addClass('alert alert-danger');
+                resetPasswordMessage.text('Notika kļūda mēģiniet velreiz!');
+
+                $('#resetPasswordForm button[type="submit"]').prop('disabled', false);
+            }
+        });
+    });
+});
+</script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

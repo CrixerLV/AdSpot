@@ -21,7 +21,7 @@ if (isset($_SESSION["id"])) {
 }
 
 if (!isset($_SESSION["id"])) {
-    header("Location: ./login.php");
+    header("Location: /index.php");
     exit();
 }
 ?>

@@ -123,7 +123,7 @@ $ads = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <?php
                     foreach ($ads as $ad) {
                         echo '<tr>';
-                        echo '<td><img class="rounded float-left" src="/AdSpot/AdImages/' . $ad['image_path'] . '" alt="Ad Image" style="width: 80px; height: 60px;background-color: grey;"></td>';
+                        echo '<td><img class="rounded float-left" src="/AdImages/' . $ad['image_path'] . '" alt="Ad Image" style="width: 80px; height: 60px;background-color: grey;"></td>';
                         echo '<td>' . $ad['adName'] . '</td>';
                         echo '<td>' . $ad['adPrice'] . '€</td>';
                         echo '<td>' . $ad['adType'] . '</td>';

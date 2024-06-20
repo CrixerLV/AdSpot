@@ -39,30 +39,32 @@ $conversations = array_values($uniqueConversations);
     <link rel="stylesheet" href="https://unpkg.com/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="icon" type="image" href="favico.png">
-
     <style>
-        .nav-link{
+        .nav-link {
             color: white;
             font-weight: bold;
         }
-        .nav-link:focus, .nav-link:hover {
+
+        .nav-link:focus,
+        .nav-link:hover {
             color: #0d6efd;
         }
-        #externals:hover{
-        transform: scale(1.1);
-        transition: transform 0.1s ease-in-out;
-        color: #0d6efd;
-        cursor: pointer;
+
+        #externals:hover {
+            transform: scale(1.1);
+            transition: transform 0.1s ease-in-out;
+            color: #0d6efd;
+            cursor: pointer;
         }
-        #convo_card:hover{
+
+        #convo_card:hover {
             background-color: whitesmoke;
         }
     </style>
-
 </head>
 
 <body class="bg-light" style="font-family: 'Open Sans', sans-serif;">
-<nav class="navbar navbar-expand-lg navbar-light sticky-top">
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container-fluid ">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +87,7 @@ $conversations = array_values($uniqueConversations);
                 </ul>
                 <?php
                 if (isset($_SESSION['name']) && isset($_SESSION['lastname'])) {
-                    echo '<div class="dropdown ms-auto me-5 d-flex flex-row align-items-center justify-content-center">';
+                    echo '<div class="dropdown ms-auto me-sm-5 me-0 d-flex flex-row align-items-center justify-content-center">';
                     echo '<a href="#" class="nav-link nav-item dropdown-toggle text-center" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">' . $_SESSION['name'] . ' ' . $_SESSION['lastname'] . '</a>';
                     echo '<ul class="dropdown-menu mx-0" aria-labelledby="dropdownMenuLink">';
                     echo '<li><a class="dropdown-item" href="profile.php">Profils</a></li>';
@@ -110,35 +112,39 @@ $conversations = array_values($uniqueConversations);
             </div>
         </div>
     </nav>
-    <div class="container-fluid container-lg mt-5" style="min-height:100vh;">
-        <div class="row text-center bg-white">
+
+    <div class="container-fluid mt-5" style="min-height: 80vh; margin-bottom: 80px;">
+        <div class="row">
             <div class="col-md-3 border-end">
                 <h1 class="h5 py-2"><strong>Sarakstes</strong></h1>
                 <div class="w-100 mb-3">
                     <input class="form-control rounded py-2" type="search" value="Meklē..." id="search-input">
                 </div>
                 <div class="list-group user-list" id="user-list">
-                <?php foreach ($conversations as $conversation) : ?>
-                    <?php
-                    $user_id = $_SESSION['id'];
-                    $messager_id = $conversation['sender_id'];
-                    $message = ($userId == $messager_id) ? "<<" : ">>";
-                    ?>
-                    <div class="card border-0 p-0 mt-2 conversation-card" data-conversation-id="<?php echo $conversation['conversation_id']; ?>" onclick="showMessages(<?php echo $conversation['conversation_id']; ?>)">
-                        <div class="card-body p-2" style="cursor:pointer;">
-                            <div class="row align-items-center">
-                                <div class="col-3 p-0">
-                                    <img src="User_Images/<?php echo $conversation['path'] ?? '../unknown.jpg'; ?>" style="width:50px; height:50px">
-                                </div>
-                                <div class="col-6 p-0 text-start">
-                                    <h1 class="h5 m-0"><?php echo $conversation['name'] . ' ' . $conversation['lastname']; ?></h1>
-                                    <p class="m-0 text-muted"><i class="text-primary fw-bold"><?php echo $message; ?></i> <?php echo $conversation['message']; ?></p>
+                    <?php foreach ($conversations as $conversation) : ?>
+                        <?php
+                        $messager_id = $conversation['sender_id'];
+                        $messageIndicator = ($userId == $messager_id) ? "<<" : ">>";
+                        ?>
+                        <div class="card border-0 p-0 mt-2 conversation-card"
+                            data-conversation-id="<?php echo $conversation['conversation_id']; ?>"
+                            onclick="showMessages(<?php echo $conversation['conversation_id']; ?>)">
+                            <div class="card-body p-2" style="cursor:pointer;">
+                                <div class="row align-items-center">
+                                    <div class="col-3 p-0">
+                                        <img src="User_Images/<?php echo $conversation['path'] ?? '../unknown.jpg'; ?>"
+                                            class="img-fluid rounded-circle" style="width:50px; height:50px"
+                                            alt="User Image">
+                                    </div>
+                                    <div class="col-9 p-0 text-start">
+                                        <h6 class="m-0"><?php echo $conversation['name'] . ' ' . $conversation['lastname']; ?></h6>
+                                        <p class="m-0 text-muted"><i class="text-primary fw-bold"><?php echo $messageIndicator; ?></i>
+                                            <?php echo $conversation['message']; ?></p>
+                                    </div>
                                 </div>
                             </div>
-                            <hr>
                         </div>
-                    </div>
-                <?php endforeach; ?>
+                    <?php endforeach?>
                 </div>
             </div>
             <div class="col-md-9">
@@ -151,9 +157,10 @@ $conversations = array_values($uniqueConversations);
                 </div>
                 <div class="row p-3">
                     <form action="./backend/send_message.php" method="POST" id="sendMessageForm">
-                        <input type="hidden" name="conversation_id" value="<?php echo $conversation['conversation_id']; ?>">
+                        <input type="hidden" name="conversation_id" value="">
                         <div class="input-group mt-3">
-                            <input type="text" name="message" id="messageInput" class="form-control" placeholder="Ievadi ziņu...">
+                            <input type="text" name="message" id="messageInput" class="form-control"
+                                placeholder="Ievadi ziņu...">
                             <button type="submit" class="btn btn-primary">Sūtīt</button>
                         </div>
                     </form>
@@ -161,56 +168,57 @@ $conversations = array_values($uniqueConversations);
             </div>
         </div>
     </div>
-    <footer class="row bg-dark p-sm-5 p-1 text-white mt-5 m-0 static-bottom">
-    <div class="col-md-3">
-        <div class="row">
-            <div class="p-0">
-                <img src="LogoBetter.png" class="w-100">
-            </div>
-        </div>
-        <div class="row g-0 mt-3">
-            <label class="text-light text-opacity-25 mt-3 mb-3">AdSpot sludinājumu vietne ir labākais un efektīvākais veids, kā tev notirgot savu īpašumu vai piederīgo mantu.</label>
-        </div>
-    </div>
-    <div class="col-md-6 d-sm-flex">
-        <div class="w-50">
 
-        </div>
-        <div class="w-sm-25">
-        <label classs="mb-3"><strong>Pārvietoties</strong></label>
-            <li class="list-group-item"><a href="dashboard.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Sākums</a></li>
-            <li class="list-group-item"><a href="allads.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Visi sludinājumi</a></li>
-            <li class="list-group-item"><a href="create_ad.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Izveidot sludinājumu</a></li>
-            <li class="list-group-item"><a href="profile.php" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Profils</a></li>
-            <label class="mt-3 mb-1"><strong>Informācija</strong></label>
-            <li class="list-group-item"><a href="#" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Noteikumi</a></li>
-            <li class="list-group-item"><a href="#" class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover link-light mx-sm-1">Par mums</a></li>
-        </div>                              
-    </div>
-    <div class="col-md-3">
-        <div class="">
-            <div class="w-100">
-                <div class="text-start">
-                    <label><strong>Ar mums vari sazināties šeit!</strong></label>
+    <footer class="bg-dark text-white mt-5 static-bottom">
+        <div class="container-fluid py-5">
+            <div class="row">
+                <div class="col-md-3">
+                    <img src="LogoBetter.png" class="img-fluid">
+                    <p class="text-light mt-3">AdSpot sludinājumu vietne ir labākais un efektīvākais veids, kā tev
+                        notirgot savu īpašumu vai piederīgo mantu.</p>
                 </div>
-                <div class="d-flex">
-                    <h3 class="m-1"><i id="externals" class="fab fa-instagram-square"></i></h3>
-                    <h3 class="m-1"><i id="externals" class="fab fa-facebook-square"></i></h3>
-                    <h3 class="m-1"><i id="externals" class="fab fa-youtube-square"></i></h3>
-                    <h3 class="m-1"><i id="externals" class="fa-brands fa-square-x-twitter"></i></h3>
+                <div class="col-md-6 d-sm-flex">
+                    <div class="w-50">
+                        <h5 class="mb-3"><strong>Pārvietoties</strong></h5>
+                        <ul class="list-unstyled">
+                            <li><a href="dashboard.php" class="text-light text-decoration-none">Sākums</a></li>
+                            <li><a href="allads.php" class="text-light text-decoration-none">Visi sludinājumi</a></li>
+                            <li><a href="create_ad.php" class="text-light text-decoration-none">Izveidot
+                                    sludinājumu</a></li>
+                            <li><a href="profile.php" class="text-light text-decoration-none">Profils</a></li>
+                        </ul>
+                    </div>
+                    <div class="w-50">
+                        <h5 class="mb-3"><strong>Informācija</strong></h5>
+                        <ul class="list-unstyled">
+                            <li><a href="#" class="text-light text-decoration-none">Noteikumi</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Par mums</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3"><strong>Sazinies ar mums</strong></h5>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="fab fa-instagram-square fa-2x"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-facebook-square fa-2x"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-youtube-square fa-2x"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter-square fa-2x"></i></a>
+                    </div>
+                    <div class="mt-3">
+                        <div class="input-group">
+                            <input type="text" class="form-control rounded-5 p-2"
+                                placeholder="Vieta ieteikumiem..." aria-label="Vieta ieteikumiem"
+                                aria-describedby="button-addon2">
+                            <button class="btn btn-primary rounded-5 mx-2" type="button"
+                                id="button-addon2">Iesniegt</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="mt-5">
-                <div class="input-group">
-                    <input type="text" class="form-control rounded-5 p-2" placeholder="Vieta ieteikumam..." aria-label="Vieta ieteikumiem" aria-describedby="button-addon2">
-                    <button class="btn btn-primary rounded-5 mx-4" type="button" id="button-addon2">Iesniegt</button>
-                </div>
-            </div>
         </div>
-    </div>
-    <hr class="mt-5 mb-5">
-    <p class="text-center text-light italic p-0 m-0">© 2024 AdSpot</p>
-</footer>
+        <hr class="my-5">
+        <p class="text-center text-light italic p-0 m-0">© 2024 AdSpot</p>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
     <script src="https://unpkg.com/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>
@@ -252,39 +260,35 @@ $conversations = array_values($uniqueConversations);
                 document.getElementById('messages').innerHTML = messageHtml;
             });
         }
-</script>
-<script>
-    $(document).ready(function() {
-        $('#sendMessageForm').submit(function(event) {
-            event.preventDefault();
-            
-            var formData = $(this).serialize();
 
-            $.ajax({
-                type: 'POST',
-                url: './backend/send_message.php',
-                data: formData,
-                dataType: 'json',
-                success: function(response) {
-                    if (response.success) {
-                        var conversationId = $('[name="conversation_id"]').val();
-                        reloadMessages(conversationId);
-                    } else {
-                        alert(response.error);
-                    }
-                },
+        $(document).ready(function () {
+            $('#sendMessageForm').submit(function (event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: './backend/send_message.php',
+                    data: formData,
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            var conversationId = $('[name="conversation_id"]').val();
+                            reloadMessages(conversationId);
+                        } else {
+                            alert(response.error);
+                        }
+                    },
+                });
             });
+
+            function reloadMessages(conversationId) {
+                $.get(`backend/fetch_messages.php?conversationId=${conversationId}`, function (data) {
+                    $('#messages').html(data);
+                    $('#messageInput').val("");
+                });
+            }
         });
-
-        function reloadMessages(conversationId) {
-            $.get(`backend/fetch_messages.php?conversationId=${conversationId}`, function(data) {
-                $('#messages').html(data);
-                $('#messageInput').val("");
-            });
-        }
-    });
-</script>
-
+    </script>
 </body>
 
 </html>

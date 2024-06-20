@@ -41,7 +41,7 @@ try {
                     <td><?php echo htmlspecialchars($row['reporter_id']); ?></td>
                     <td><?php echo htmlspecialchars($row['reported_id']); ?></td>
                     <td>
-                        <a class="btn btn-outline-danger rounded-0 mx-2" onclick="return confirm('Vai tiešām vēlies dzēst šo sūdzību?');" href="../backend/delete_report.php?id=<?php echo htmlspecialchars($row['report_id']); ?>"><i class="fa-solid fa-trash-can"></i></a>
+                        <a class="btn btn-outline-danger rounded-0 mx-2" onclick="return confirm('Vai tiešām vēlies dzēst šo sūdzību?');" href="backend/delete_report.php?id=<?php echo htmlspecialchars($row['report_id']); ?>"><i class="fa-solid fa-trash-can"></i></a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

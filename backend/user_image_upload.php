@@ -5,7 +5,7 @@ require "db_con.php";
 function logError($message) {
     error_log($message, 3, 'error_log.txt');
     $_SESSION['error'] = $message;
-    header('Location: /AdSpot/profile.php');
+    header('Location: /profile.php');
     exit();
 }
 
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_FILES['userImage']) && isset
             if (move_uploaded_file($fileTmpPath, $uploadPath)) {
                 if ($stmt->execute()) {
                     $_SESSION['success'] = 'Attēls veiksmīgi augšupielādēts!';
-                    header('Location: /AdSpot/profile.php');
+                    header('Location: /profile.php');
                     exit();
                 } else {
                     logError('Database error: Could not update image path.');

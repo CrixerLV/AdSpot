@@ -31,37 +31,6 @@ if (!isset($pdo)) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         $pdo->beginTransaction();
-        $latvianTranslations = [
-            "Vehicle" => "Transports",
-            "Pets" => "Dzīvnieki",
-            "Electronic" => "Elektronika",
-            "Job" => "Darbs un bizness",
-            "Furniture" => "Mājai, dārzam",
-            "Other" => "Cits",
-            "Cars" => "Vieglā automašīna",
-            "Heavy" => "Smagā automašīna",
-            "Motorcycles" => "Motocikls",
-            "WaterTransport" => "Ūdens transportlīdzeklis",
-            "FarmEquipment" => "Lauksaimniecības tehnika",
-            "Dog" => "Suns",
-            "Cat" => "Kaķis",
-            "Rats" => "Grauzējs",
-            "Fish" => "Zivs",
-            "Birds" => "Putns",
-            "BigAnimals" => "Lauksaimniecības dzīvnieks",
-            "Contact" => "Sakaru līdzeklis",
-            "Life" => "Sadzīves tehnika",
-            "Computer" => "Dators",
-            "Audio" => "Audio tehnika",
-            "Video" => "Video tehnika",
-            "TV" => "Televizors",
-            "Vacancy" => "Vakance",
-            "Courses" => "Kursi",
-            "Art" => "Gleznas",
-            "Plants" => "Augi",
-        ];
-
-        $latvianAdType = $latvianTranslations[$_POST["adType"]];
 
         $queryAds = "INSERT INTO ads (adName, adPrice, adDescription, adLocation, adType, sellerId) VALUES (:adName, :adPrice, :adDescription, :adLocation, :adType, :sellerId)";
         $stmtAds = $pdo->prepare($queryAds);
@@ -69,7 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmtAds->bindParam(':adPrice', $_POST["adPrice"]);
         $stmtAds->bindParam(':adDescription', $_POST["adDescription"]);
         $stmtAds->bindParam(':adLocation', $_POST["adLocation"]);
-        $stmtAds->bindParam(':adType', $latvianAdType);
+        $stmtAds->bindParam(':adType', $_POST["adType"]);
         $stmtAds->bindParam(':sellerId', $_SESSION["id"]);
         $stmtAds->execute();
 
@@ -91,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmtVehicle->execute();
                 break;
 
-            case "Dzīveniki":
+            case "Dzīvnieki":
                 $petType = isset($_POST["petType"]) ? $_POST["petType"] : null;
                 $petBrand = isset($_POST["petBrand"]) ? $_POST["petBrand"] : null;
 
@@ -185,7 +154,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
 
         $pdo->commit();
-        header("Location: \AdSpot\dashboard.php");
+        header("Location: /dashboard.php");
         exit();
     } catch (Exception $e) {
         $pdo->rollBack();
